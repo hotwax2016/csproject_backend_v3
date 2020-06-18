@@ -14,25 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-
-// sanctum route guard
-Route::middleware('auth:sanctum')->get('/msg', function (Request $request) {
-    return response()->json([
-        'msg' => 'success',
-    ], 200);
-});
+Route::middleware('auth:sanctum')->post('/events', 'EventController@store');
+Route::middleware('auth:sanctum')->post('/articles', 'ArticleController@store');
+Route::middleware('auth:sanctum')->get('/posts', 'PostController@index');
 
 //auth routes
 Route::post('/register', 'auth\RegistrationController@register');
 Route::post('/login', 'auth\LoginController@login');
 Route::post('/logout', 'auth\LoginController@logout');
-
-/* Route::get('/msg', function (Request $request) {
-    return response()->json([
-        'msg' => 'success',
-    ], 200);
-}); */
