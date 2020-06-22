@@ -13,4 +13,9 @@ class Post extends Model
     {
         return $this->morphTo();
     }
+
+    public function postToGuide() 
+    { 
+        return $this->belongsTo('App\Guide', 'guide_id');
+    }
 }

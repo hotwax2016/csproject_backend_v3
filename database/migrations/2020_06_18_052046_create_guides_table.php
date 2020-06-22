@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePostsTable extends Migration
+class CreateGuidesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreatePostsTable extends Migration
      */
     public function up()
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('guides', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('guide_id');
-            $table->boolean('state')->default(false);
-            $table->unsignedBigInteger('postable_id');
-            $table->string('postable_type');
+            $table->unsignedBigInteger('user_id');
+            $table->boolean('active')->default(false);
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreatePostsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('guides');
     }
 }

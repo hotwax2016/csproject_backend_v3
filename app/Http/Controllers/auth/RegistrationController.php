@@ -27,19 +27,15 @@ class RegistrationController extends Controller
             'role' => $request->role,
         ]);
 
-/*         $profile = $user->profile()->create([
-            'active' => true,
-        ]);
-
         if ($request->role == 'tourist') {
-            $profile->profileToTourist()->create([
+            $user->userToTourist()->create([
                 'active' => true,
             ]);
         } else if ($request->role == 'guide') {
-            $profile->profileToGuide()->create([
+            $user->userToGuide()->create([
                 'active' => true,
             ]);
-        } */
+        }
 
         return response()->json(200);
     }

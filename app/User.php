@@ -35,4 +35,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function userToTourist() 
+    {
+        return $this->hasOne('App\Tourist');
+    }
+
+    public function userToGuide() 
+    {
+        return $this->hasOne('App\Guide');
+    }
+
 }

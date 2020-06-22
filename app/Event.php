@@ -14,4 +14,10 @@ class Event extends Model
     {
         return $this->morphOne('App\Post', 'postable');
     }
+
+    public function EventToTourists()
+    {
+        return $this->belongsToMany('App\Tourist', 'event_tourist');
+    }
+
 }

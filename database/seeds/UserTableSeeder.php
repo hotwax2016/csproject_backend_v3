@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Seeder;
 use App\User;
+use App\Tourist;
+use App\Guide;
 
 class UserTableSeeder extends Seeder
 {
@@ -12,7 +14,7 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        User::create([
+        $user = User::create([
             'username' => 'johnD',
             'role' => 'tourist',
             'email' => 'john@gmail.com',
@@ -32,8 +34,9 @@ class UserTableSeeder extends Seeder
             'lang_secondary' => '',
             'country' => 'Sri Lanka',
         ]);
+        $user->userToTourist()->create(['active' => true]);
 
-        User::create([
+        $user = User::create([
             'username' => 'janeD',
             'role' => 'guide',
             'email' => 'jane@gmail.com',
@@ -53,5 +56,7 @@ class UserTableSeeder extends Seeder
             'lang_secondary' => '',
             'country' => 'UK',
         ]);
+        $user->userToGuide()->create(['active' => true]);
+
     }
 }

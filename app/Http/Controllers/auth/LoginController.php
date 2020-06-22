@@ -18,12 +18,7 @@ class LoginController extends Controller
         ]);
 
         if(Auth::attempt($request->only('email', 'password'))) {
-            /* $role = Auth::user()->role;
-            if ($role == 'tourist') {
-                $user = Auth::user()->load('profile.profileToTourist');
-            } else if ($role == 'guide') {
-                $user = Auth::user()->load('profile.profileToGuide');
-            } */
+
             $user = Auth::user();
             return response()->json($user, 200);
         }
