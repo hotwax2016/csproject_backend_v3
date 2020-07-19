@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Event;
 use App\Tourist;
 use App\Post;
+use App\User;
 
 class EventController extends Controller
 {
@@ -33,18 +34,22 @@ class EventController extends Controller
         ]);
 
 
-        $post = $event->post()->create(['guide_id' => $request->input('guide_id')]);
+        $guide_id = User::find($request->input('user_id'))->userToGuide->id;
+        $post = $event->post()->create(['guide_id' => $guide_id]);
 
         return response()->json($request->input('guide_id'), 200);
     }
 
     public function registerToEvent(Request $request)
     {
-        $event = Event::find($request->event_id);
-        $state = $event->eventToTourists()->attach($request->tourist_id);
+        $tourist_id = User::find($request->input('user_id'))->userToTourist->id;
+        $event = Event::find($request->input('event_id'));
 
-        $registered_events = Tourist::find($request->tourist_id)->touristToEvents;
+        $state = $event->eventToTourists()->attach($tourist_id);
+
+        $registered_events = Tourist::find($tourist_id)->touristToEvents()->get();
         return response()->json($registered_events, 200);
+        /* return response()->json($state, 200); */
     }
 
     public function registeredEvents(Request $request) 
@@ -52,7 +57,7 @@ class EventController extends Controller
         $tourist_id = $request->input('tourist_id');
         $tourist = Tourist::find($tourist_id);
         $registeredEvents = $tourist->touristToEvents;
+
         return response()->json($registeredEvents, 200);
-        
     }
 }

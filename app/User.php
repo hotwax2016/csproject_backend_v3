@@ -46,4 +46,13 @@ class User extends Authenticatable
         return $this->hasOne('App\Guide');
     }
 
+    public function reviews()
+    {
+        return $this->hasMany('App\Review');
+    }
+
+    public function follows() {
+        return $this->belongsToMany('App\User', 'follows', 'user_id', 'following_user_id')
+                    ->withTimestamps();
+    }
 }

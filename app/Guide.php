@@ -20,4 +20,20 @@ class Guide extends Model
     {
         return $this->hasOne('App\Post');
     }
+
+    public function guideToDestination()
+    {
+        return $this->belongsTo('App\Destination', 'destination_id');
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany('App\Review');;
+    }
+
+    public function appointments()
+    {
+        return $this->hasMany('App\Appointment');
+    }
+
 }

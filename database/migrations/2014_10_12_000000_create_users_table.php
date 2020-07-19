@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('role');
             $table->string('fname')->nullable();
             $table->string('lname')->nullable();
-            $table->string('bio')->nullable();
+            $table->text('bio')->nullable();
             $table->string('title')->nullable();
             $table->string('gender')->nullable();
             $table->string('dp_url')->nullable();

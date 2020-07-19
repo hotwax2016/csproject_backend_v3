@@ -4,20 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Article;
+use App\User;
 
 class ArticleController extends Controller
 {
     public function store(Request $request)
     {
-        $article = $request->validate([
-            'title' => ['required'],
-            'body' => ['required'],
-        ]);
         
-        $article = Article::create($article);
-        $article->post()->create([
-            'state' => true
+        $article = Article::create([
+            'title' => $request->input('title'),
+            'body' => $request->input('body'),
         ]);
-        return response()->json($article, 200);
+        $guide = User::find($request->input('user_id'))->userToGuide;
+        $post = $article->post()->create(['guide_id' => $guide->id]);
+        /* return response()->json($article, 200); */
+        return response()->json($post, 200);
     }
 }

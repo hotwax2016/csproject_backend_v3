@@ -17,4 +17,10 @@ class Tourist extends Model
     {
         return $this->belongsToMany('App\Event', 'event_tourist');
     }
+
+    public function appointments()
+    {
+        return $this->hasMany('App\Appointment');
+    }
+
 }
