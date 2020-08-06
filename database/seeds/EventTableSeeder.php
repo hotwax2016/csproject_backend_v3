@@ -19,7 +19,7 @@ class EventTableSeeder extends Seeder
             'start' => '2020-06-20',
             'end' => '2020-06-20',
         ]);
-        $event->post()->create(['guide_id' => 28]);
+        $event->post()->create(['guide_id' => 25]);
 
         $event = Event::create([
             'title' => 'Lorem ipsum dolor sit amet consectetur',
@@ -28,7 +28,7 @@ class EventTableSeeder extends Seeder
             'start' => '2020-06-20',
             'end' => '2020-06-20',
         ]);
-        $event->post()->create(['guide_id' => 28]);
+        $event->post()->create(['guide_id' => 25]);
 
         $event = Event::create([
             'title' => 'Lorem ipsum dolor sit amet consectetur',
@@ -37,7 +37,7 @@ class EventTableSeeder extends Seeder
             'start' => '2020-06-20',
             'end' => '2020-06-20',
         ]);
-        $event->post()->create(['guide_id' => 28]);
+        $event->post()->create(['guide_id' => 25]);
 
     }
 }

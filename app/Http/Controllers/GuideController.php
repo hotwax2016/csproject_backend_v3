@@ -9,7 +9,13 @@ class GuideController extends Controller
 {
     public function index()
     {
-        $guides = Guide::all()->load('guideToUser', 'guideToDestination');
+        $guides = Guide::all()->load('guideToUser', 'guideToDestination')->take(7);
+        return response()->json($guides, 200);
+    }
+
+    public function guideswelcomepage()
+    {
+        $guides = Guide::all()->load('guideToUser', 'reviews');
         return response()->json($guides, 200);
     }
 

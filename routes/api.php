@@ -40,6 +40,11 @@ Route::middleware('auth:sanctum')->post('/guidesbydestination', 'GuideController
 Route::middleware('auth:sanctum')->post('follows', 'UserController@follows');
 Route::middleware('auth:sanctum')->post('followsbyid', 'UserController@followsbyid');
 
+Route::middleware('auth:sanctum')->post('notifications', 'NotificationController@index');
+Route::middleware('auth:sanctum')->post('readnotification', 'NotificationController@readnotification');
+
+Route::get('/guideswelcomepage', 'GuideController@index');
+
 //auth routes
 Route::post('/register', 'auth\RegistrationController@register');
 Route::post('/login', 'auth\LoginController@login');

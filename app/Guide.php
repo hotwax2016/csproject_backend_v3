@@ -3,9 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Guide extends Model
 {
+
+    use Notifiable;
+    
     public function guideToUser()
     {
         return $this->belongsTo('App\User', 'user_id');

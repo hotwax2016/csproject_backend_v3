@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\NewAppointment;
+use App\Notifications\AppointmentAccepted;
+use App\Notifications\AppointmentDeclined;
 use App\Tourist;
 use App\Appointment;
 use App\User;
@@ -20,21 +24,25 @@ class AppointmentController extends Controller
     {
         if ($request->has('filter')) {
             $appointment_state = $request->input('filter');
+            $guide = User::find($request->input('user_id'))->userToGuide;
+            $appointments = $guide->appointments()
+                                ->with('locations', 'tourist.touristToUser')
+                                ->where('conform', $appointment_state)
+                                ->get();
         } else {
             $appointment_state = '';
+            $guide = User::find($request->input('user_id'))->userToGuide;
+            $appointments = $guide->appointments()
+                                ->with('locations', 'tourist.touristToUser')
+                                ->get();
         }
-        $guide = User::find($request->input('user_id'))->userToGuide;
-        $appointments = $guide->appointments()
-                            ->with('locations', 'tourist.touristToUser')
-                            ->where('conform', $appointment_state)
-                            ->get();
         return response()->json($appointments, 200);
     }
 
     public function store(Request $request)
     {
         $tourist_id = $request->input('inviter.user_id');
-        $guide = json_encode($request->input('guide.id'));
+        $guide_id = json_encode($request->input('guide.id'));
 
         if ($request->has('name')) {
             $name = $request->input('name');
@@ -69,7 +77,7 @@ class AppointmentController extends Controller
 
         $tourist = Tourist::find($tourist_id);
         $appointment = $tourist->appointments()->create([
-            'guide_id' => $guide,
+            'guide_id' => $guide_id,
             'adults' => $adult_count,
             'children' => $children_count,
             'interests' => $interests,
@@ -81,6 +89,11 @@ class AppointmentController extends Controller
         ]);
 
         $appointment->locations()->attach($locationsId);
+
+        // notify users by notifications
+        $user = User::find(Guide::find($guide_id)->guideToUser->id);
+        Notification::send($user, new NewAppointment($appointment));
+
         return response()->json($appointment, 200);
     }
 
@@ -93,6 +106,15 @@ class AppointmentController extends Controller
         $appointment->update([
             'conform' => $request->input('conform'),
         ]);
+        
+        $tourist = Tourist::find($appointment->tourist_id);
+        $user = User::find($tourist->touristToUser->id);
+        
+        if ($request->input('conform') == 1) {
+            Notification::send($user, new AppointmentAccepted($appointment));
+        } else if ($request->input('conform') == 0) {
+            Notification::send($user, new AppointmentDeclined($appointment));
+        }
 
         $appointments = Appointment::where('guide_id', $guide_id)
                             ->with('locations', 'tourist.touristToUser')
